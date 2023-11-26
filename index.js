@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 require('dotenv').config();
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 500;
 
 // MiddleWare
 app.use(cors());
@@ -26,7 +26,15 @@ async function run() {
         // Connect the client to the server	(optional starting in v4.7)
         await client.connect();
 
+        const teacherCollection = client.db("schoolDB").collection("request");
 
+        // Create Request
+        app.post('/request', async (req, res) => {
+            const newRequest = req.body;
+            console.log(newRequest);
+            const result = await teacherCollection.insertOne(newRequest);
+            res.send(result);
+        })
 
         // Send a ping to confirm a successful connection
         await client.db("admin").command({ ping: 1 });
