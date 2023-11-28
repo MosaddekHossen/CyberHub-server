@@ -86,6 +86,21 @@ async function run() {
             res.send(result);
         })
 
+        // Check Admin
+        app.get('/users/admin/:email', async (req, res) => {
+            const email = req.params.email;
+            // if(email !== res.user.email){
+            //     return res.status(403).send({message: 'unauthorized access'})
+            // }
+            const query = { email: email };
+            const user = await userCollection.findOne(query);
+            let admin = false;
+            if (user) {
+                admin = user?.role === 'admin';
+            }
+            res.send({ admin });
+        })
+
         // Send a ping to confirm a successful connection
         // await client.db("admin").command({ ping: 1 });
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
