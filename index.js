@@ -101,6 +101,34 @@ async function run() {
             res.send({ admin });
         })
 
+        // Make Teacher User
+        app.patch('/users/teacher/:id', async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: new ObjectId(id) };
+            const updateDoc = {
+                $set: {
+                    role: 'teacher'
+                }
+            }
+            const result = await userCollection.updateOne(filter, updateDoc);
+            res.send(result);
+        })
+
+        // Check Teacher
+        app.get('/users/teacher/:email', async (req, res) => {
+            const email = req.params.email;
+            // if(email !== res.user.email){
+            //     return res.status(403).send({message: 'unauthorized access'})
+            // }
+            const query = { email: email };
+            const user = await userCollection.findOne(query);
+            let teacher = false;
+            if (user) {
+                teacher = user?.role === 'teacher';
+            }
+            res.send({ teacher });
+        })
+
         // Send a ping to confirm a successful connection
         // await client.db("admin").command({ ping: 1 });
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
