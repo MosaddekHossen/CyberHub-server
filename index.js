@@ -59,6 +59,14 @@ async function run() {
             res.send(result);
         })
 
+        // Get Update
+        app.get('/request/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: new ObjectId(id) }
+            const result = await teacherCollection.findOne(query);
+            res.send(result);
+        })
+
         // Users related api (Create)
         app.post('/users', async (req, res) => {
             const user = req.body;
