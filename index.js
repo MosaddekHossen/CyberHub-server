@@ -6,8 +6,14 @@ require('dotenv').config();
 const port = process.env.PORT || 500;
 
 // MiddleWare
-app.use(cors());
+// app.use(cors());
 app.use(express.json());
+app.use(
+    cors({
+        origin: ['http://localhost:5173', 'http://localhost:5174', 'https://123sweet-copy.surge.sh'],
+        credentials: true,
+    }),
+)
 
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@atlascluster.nqtfzbx.mongodb.net/?retryWrites=true&w=majority`;
